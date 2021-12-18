@@ -1,9 +1,9 @@
-const tronWebBuilder = require('./tronWebBuilder');
-const tronWeb = tronWebBuilder.createInstance();
+const welWebBuilder = require('./welWebBuilder');
+const welWeb = welWebBuilder.createInstance();
 
 const amount = process.argv[2] || 10;
 
 (async function () {
-    await tronWebBuilder.newTestAccounts(amount)
+    await welWebBuilder.newTestAccounts(amount)
 })()
 

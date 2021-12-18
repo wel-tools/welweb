@@ -7,7 +7,7 @@ import semver from 'semver';
 import injectpromise from 'injectpromise';
 
 import TransactionBuilder from 'lib/transactionBuilder';
-import Trx from 'lib/trx';
+import Wel from 'lib/wel';
 import Contract from 'lib/contract';
 import Plugin from 'lib/plugin';
 import Event from 'lib/event';
@@ -19,11 +19,11 @@ const DEFAULT_VERSION = '3.5.0';
 
 const FEE_LIMIT = 150000000;
 
-export default class TronWeb extends EventEmitter {
+export default class WelWeb extends EventEmitter {
     static providers = providers;
     static BigNumber = BigNumber;
     static TransactionBuilder = TransactionBuilder;
-    static Trx = Trx;
+    static Wel = Wel;
     static Contract = Contract;
     static Plugin = Plugin;
     static Event = Event;
@@ -61,7 +61,7 @@ export default class TronWeb extends EventEmitter {
 
         this.event = new Event(this);
         this.transactionBuilder = new TransactionBuilder(this);
-        this.trx = new Trx(this);
+        this.wel = new Wel(this);
         this.plugin = new Plugin(this, options);
         this.utils = utils;
 
@@ -85,11 +85,11 @@ export default class TronWeb extends EventEmitter {
             'toSun', 'fromSun', 'toBigNumber', 'isAddress',
             'createAccount', 'address', 'version'
         ].forEach(key => {
-            this[key] = TronWeb[key];
+            this[key] = WelWeb[key];
         });
         // for sidechain
         if (typeof sideOptions === 'object' && (sideOptions.fullNode || sideOptions.fullHost)) {
-            this.sidechain = new SideChain(sideOptions, TronWeb, this, privateKey);
+            this.sidechain = new SideChain(sideOptions, WelWeb, this, privateKey);
         } else {
             privateKey = privateKey || sideOptions;
         }
@@ -306,23 +306,23 @@ export default class TronWeb extends EventEmitter {
 
     static toHex(val) {
         if (utils.isBoolean(val))
-            return TronWeb.fromDecimal(+val);
+            return WelWeb.fromDecimal(+val);
 
         if (utils.isBigNumber(val))
-            return TronWeb.fromDecimal(val);
+            return WelWeb.fromDecimal(val);
 
         if (typeof val === 'object')
-            return TronWeb.fromUtf8(JSON.stringify(val));
+            return WelWeb.fromUtf8(JSON.stringify(val));
 
         if (utils.isString(val)) {
             if (/^(-|)0x/.test(val))
                 return val;
 
             if ((!isFinite(val)) || /^\s*$/.test(val))
-                return TronWeb.fromUtf8(val);
+                return WelWeb.fromUtf8(val);
         }
 
-        let result = TronWeb.fromDecimal(val);
+        let result = WelWeb.fromDecimal(val);
         if (result === '0xNaN') {
             throw new Error('The passed value is not convertible to a hex string');
         } else {
@@ -372,23 +372,23 @@ export default class TronWeb extends EventEmitter {
 
 
     static toDecimal(value) {
-        return TronWeb.toBigNumber(value).toNumber();
+        return WelWeb.toBigNumber(value).toNumber();
     }
 
     static fromDecimal(value) {
-        const number = TronWeb.toBigNumber(value);
+        const number = WelWeb.toBigNumber(value);
         const result = number.toString(16);
 
         return number.isLessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
     }
 
     static fromSun(sun) {
-        const trx = TronWeb.toBigNumber(sun).div(1_000_000);
+        const trx = WelWeb.toBigNumber(sun).div(1_000_000);
         return utils.isBigNumber(sun) ? trx : trx.toString(10);
     }
 
     static toSun(trx) {
-        const sun = TronWeb.toBigNumber(trx).times(1_000_000);
+        const sun = WelWeb.toBigNumber(trx).times(1_000_000);
         return utils.isBigNumber(trx) ? sun : sun.toString(10);
     }
 
@@ -409,7 +409,7 @@ export default class TronWeb extends EventEmitter {
         // Convert HEX to Base58
         if (address.length === 42) {
             try {
-                return TronWeb.isAddress(
+                return WelWeb.isAddress(
                     utils.crypto.getBase58CheckAddress(
                         utils.code.hexStr2byteArray(address) // it throws an error if the address starts with 0x
                     )

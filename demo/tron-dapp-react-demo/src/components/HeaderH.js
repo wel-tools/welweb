@@ -123,7 +123,7 @@ class LeftMenu extends React.Component {
         <div className="header-container">
           <div className="menu-scroll-frame">
             <div className="menu-scroll">
-              <h6 className="header-logo">TRON DAPP Logo</h6>
+              <h6 className="header-logo">WELUPS DAPP Logo</h6>
               <div className="menu-content">
                 <div className="features">
                   <div className="connect-wallet">

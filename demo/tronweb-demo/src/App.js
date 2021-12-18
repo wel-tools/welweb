@@ -4,7 +4,7 @@ import './App.css';
 import React from 'react';
 import './App.css';
 
-import TronWeb from 'tronweb'
+import WelWeb from 'welweb'
 
 // const mainOptions = {
 //   fullNode: "https://testhttpapi.tronex.io",
@@ -48,7 +48,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.tronWeb1 = new TronWeb(mainOptions.fullNode, mainOptions.solidityNode, mainOptions.eventServer, privateKey);
+    window.welWeb1 = new WelWeb(mainOptions.fullNode, mainOptions.solidityNode, mainOptions.eventServer, privateKey);
   }
 
   send = e => {};

@@ -1,27 +1,27 @@
 const chai = require('chai');
 const {FULL_NODE_API} = require('../helpers/config');
 const assertThrow = require('../helpers/assertThrow');
-const tronWebBuilder = require('../helpers/tronWebBuilder');
-const TronWeb = tronWebBuilder.TronWeb;
+const welWebBuilder = require('../helpers/welWebBuilder');
+const WelWeb = welWebBuilder.WelWeb;
 const jlog = require('../helpers/jlog')
 const broadcaster = require('../helpers/broadcaster');
 const wait = require('../helpers/wait')
 
 const assert = chai.assert;
 
-describe('TronWeb.lib.event', async function () {
+describe('WelWeb.lib.event', async function () {
 
     let accounts
-    let tronWeb
+    let welWeb
     let contractAddress
     let contract
     let eventLength = 0
 
     before(async function () {
-        tronWeb = tronWebBuilder.createInstance();
-        accounts = await tronWebBuilder.getTestAccounts(-1);
+        welWeb = welWebBuilder.createInstance();
+        accounts = await welWebBuilder.getTestAccounts(-1);
 
-        const result = await broadcaster(tronWeb.transactionBuilder.createSmartContract({
+        const result = await broadcaster(welWeb.transactionBuilder.createSmartContract({
             abi: [
                 {
                     "anonymous": false,
@@ -68,15 +68,15 @@ describe('TronWeb.lib.event', async function () {
         }, accounts.hex[0]), accounts.pks[0])
 
         contractAddress = result.receipt.transaction.contract_address
-        contract = await tronWeb.contract().at(contractAddress)
+        contract = await welWeb.contract().at(contractAddress)
 
     });
 
     describe('#constructor()', function () {
 
-        it('should have been set a full instance in tronWeb', function () {
+        it('should have been set a full instance in welWeb', function () {
 
-            assert.instanceOf(tronWeb.event, TronWeb.Event);
+            assert.instanceOf(welWeb.event, WelWeb.Event);
         });
 
     });
@@ -87,14 +87,14 @@ describe('TronWeb.lib.event', async function () {
         it('should emit an unconfirmed event and get it', async function () {
 
             this.timeout(60000)
-            tronWeb.setPrivateKey(accounts.pks[1])
+            welWeb.setPrivateKey(accounts.pks[1])
             let txId = await contract.emitNow(accounts.hex[2], 2000).send({
                 from: accounts.hex[1]
             })
             eventLength++
             let events
             while(true) {
-                events = await tronWeb.event.getEventsByTransactionID(txId)
+                events = await welWeb.event.getEventsByTransactionID(txId)
                 if (events.length) {
                     break
                 }
@@ -110,7 +110,7 @@ describe('TronWeb.lib.event', async function () {
         it('should emit an event, wait for confirmation and get it', async function () {
 
             this.timeout(60000)
-            tronWeb.setPrivateKey(accounts.pks[1])
+            welWeb.setPrivateKey(accounts.pks[1])
             let output = await contract.emitNow(accounts.hex[2], 2000).send({
                 from: accounts.hex[1],
                 shouldPollResponse: true,
@@ -121,7 +121,7 @@ describe('TronWeb.lib.event', async function () {
             let txId = output.id
             let events
             while(true) {
-                events = await tronWeb.event.getEventsByTransactionID(txId)
+                events = await welWeb.event.getEventsByTransactionID(txId)
                 if (events.length) {
                     break
                 }
@@ -141,14 +141,14 @@ describe('TronWeb.lib.event', async function () {
         it('should emit an event and wait for it', async function () {
 
             this.timeout(60000)
-            tronWeb.setPrivateKey(accounts.pks[3])
+            welWeb.setPrivateKey(accounts.pks[3])
             await contract.emitNow(accounts.hex[4], 4000).send({
                 from: accounts.hex[3]
             })
             eventLength++
             let events
             while(true) {
-                events = await tronWeb.event.getEventsByContractAddress(contractAddress, {
+                events = await welWeb.event.getEventsByContractAddress(contractAddress, {
                     eventName: 'SomeEvent',
                     sort: 'block_timestamp'
                 })
@@ -171,20 +171,20 @@ describe('TronWeb.lib.event', async function () {
     describe('#contract.method.watch', async function () {
 
         it('should watch for an event', async function () {
-            
+
             this.timeout(20000)
-            tronWeb.setPrivateKey(accounts.pks[3])
+            welWeb.setPrivateKey(accounts.pks[3])
 
             let watchTest = await contract.SomeEvent().watch((err, res) => {
                 if(res) {
                     assert.equal(res.result._sender, accounts.hex[3])
                     assert.equal(res.result._receiver, accounts.hex[4])
                     assert.equal(res.result._amount, 4000)
-                    
+
                     watchTest.stop() // Calls stop on itself when successful
                 }
             })
-            
+
             contract.emitNow(accounts.hex[4], 4000).send({
                 from: accounts.hex[3]
             })
@@ -194,10 +194,10 @@ describe('TronWeb.lib.event', async function () {
         it('should only watch for an event with given filters',  async function () {
 
             this.timeout(20000)
-            tronWeb.setPrivateKey(accounts.pks[3])
-            
+            welWeb.setPrivateKey(accounts.pks[3])
+
             let watchTest = await contract.SomeEvent().watch({filters: {"_amount": "4000"}}, (err, res) => {
-                if(res) { 
+                if(res) {
                     assert.equal(res.result._sender, accounts.hex[3])
                     assert.equal(res.result._receiver, accounts.hex[4])
                     assert.equal(res.result._amount, 4000)
@@ -205,7 +205,7 @@ describe('TronWeb.lib.event', async function () {
                     watchTest.stop() // Calls stop on itself when successful
                 }
             })
-            
+
             contract.emitNow(accounts.hex[4], 4000).send({
                 from: accounts.hex[3]
             })

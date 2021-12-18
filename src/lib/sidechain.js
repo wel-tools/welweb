@@ -1,10 +1,10 @@
 import injectpromise from 'injectpromise';
 import Validator from 'paramValidator';
 export default class SideChain {
-    constructor(sideOptions, TronWeb = false, mainchain = false, privateKey = false) {
+    constructor(sideOptions, WelWeb = false, mainchain = false, privateKey = false) {
         this.mainchain = mainchain;
         const { fullHost, fullNode, solidityNode, eventServer, mainGatewayAddress, sideGatewayAddress, sideChainId } = sideOptions;
-        this.sidechain = new TronWeb(fullHost || fullNode, fullHost || solidityNode, fullHost || eventServer, privateKey);
+        this.sidechain = new WelWeb(fullHost || fullNode, fullHost || solidityNode, fullHost || eventServer, privateKey);
         this.isAddress = this.mainchain.isAddress;
         this.utils = this.mainchain.utils;
         this.setMainGatewayAddress(mainGatewayAddress);

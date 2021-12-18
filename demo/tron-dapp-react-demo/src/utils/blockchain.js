@@ -1,4 +1,4 @@
-import TronWeb from 'tronweb';
+import WelWeb from 'welweb';
 import Config from '../config';
 
 import { BigNumber, openTransModal, setTransactionsData, randomSleep, myLocal } from './helper';
@@ -9,15 +9,15 @@ const DATA_LEN = 64;
 export const MAX_UINT256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 const privateKey = chain.privateKey;
 
-const mainchain = new TronWeb({
+const mainchain = new WelWeb({
   fullHost: chain.fullHost,
   privateKey
 });
 
 export const triggerSmartContract = async (address, functionSelector, options = {}, parameters = []) => {
   try {
-    const tronweb = window.tronWeb;
-    const transaction = await tronweb.transactionBuilder.triggerSmartContract(
+    const welweb = window.welWeb;
+    const transaction = await welweb.transactionBuilder.triggerSmartContract(
       address,
       functionSelector,
       Object.assign({ feeLimit: 20 * 1e6 }, options),
@@ -35,8 +35,8 @@ export const triggerSmartContract = async (address, functionSelector, options = 
 
 export const sign = async transaction => {
   try {
-    const tronweb = window.tronWeb;
-    const signedTransaction = await tronweb.trx.sign(transaction.transaction);
+    const welweb = window.welWeb;
+    const signedTransaction = await welweb.trx.sign(transaction.transaction);
     return signedTransaction;
   } catch (error) {
     console.log(error, 'signerr');
@@ -46,21 +46,21 @@ export const sign = async transaction => {
 
 export const sendRawTransaction = async signedTransaction => {
   try {
-    const tronweb = window.tronWeb;
-    const result = await tronweb.trx.sendRawTransaction(signedTransaction);
+    const welweb = window.welWeb;
+    const result = await welweb.trx.sendRawTransaction(signedTransaction);
     return result;
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const view = async (address, functionSelector, parameters = [], isDappTronWeb = true) => {
+export const view = async (address, functionSelector, parameters = [], isDappWelWeb = true) => {
   try {
-    let tronweb = mainchain;
-    if (!isDappTronWeb && window.tronWeb && window.tronWeb.ready) {
-      tronweb = window.tronWeb;
+    let welweb = mainchain;
+    if (!isDappWelWeb && window.welWeb && window.welWeb.ready) {
+      welweb = window.welWeb;
     }
-    const result = await tronweb.transactionBuilder.triggerSmartContract(
+    const result = await welweb.transactionBuilder.triggerSmartContract(
       address,
       functionSelector,
       { _isConstant: true },
@@ -73,13 +73,13 @@ export const view = async (address, functionSelector, parameters = [], isDappTro
   }
 };
 
-export const getTrxBalance = async (address, isDappTronWeb = false) => {
+export const getTrxBalance = async (address, isDappWelWeb = false) => {
   try {
-    let tronWeb = mainchain;
-    if (!isDappTronWeb && window.tronWeb && window.tronWeb.ready) {
-      tronWeb = window.tronWeb;
+    let welWeb = mainchain;
+    if (!isDappWelWeb && window.welWeb && window.welWeb.ready) {
+      welWeb = window.welWeb;
     }
-    const balance = await tronWeb.trx.getBalance(address);
+    const balance = await welWeb.trx.getBalance(address);
     return {
       balance: BigNumber(balance).div(Config.defaultPrecision),
       success: true
@@ -94,9 +94,9 @@ export const getTrxBalance = async (address, isDappTronWeb = false) => {
 };
 
 export const getTransactionInfo = tx => {
-  const tronWeb = mainchain;
+  const welWeb = mainchain;
   return new Promise((resolve, reject) => {
-    tronWeb.trx.getConfirmedTransaction(tx, (e, r) => {
+    welWeb.trx.getConfirmedTransaction(tx, (e, r) => {
       if (!e) {
         resolve(r);
       } else {

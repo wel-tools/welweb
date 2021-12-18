@@ -1,5 +1,5 @@
 import React from 'react';
-import TronWeb from 'tronweb';
+import WelWeb from 'welweb';
 import intl from 'react-intl-universal';
 import moment from 'moment';
 import bigNumber from 'bignumber.js';
@@ -7,7 +7,7 @@ import Config from '../config';
 
 const chain = Config.chain;
 
-const tronWeb = new TronWeb({
+const welWeb = new WelWeb({
   fullHost: chain.fullHost
 });
 
@@ -22,15 +22,15 @@ bigNumber.prototype._toHex = function () {
   return `0x${this.toString(16)}`;
 };
 
-export const toBigNumber = tronWeb.toBigNumber;
+export const toBigNumber = welWeb.toBigNumber;
 
-// export const BigNumber = tronWeb.BigNumber;
+// export const BigNumber = welWeb.BigNumber;
 export const BigNumber = bigNumber;
 
-export const toDecimal = tronWeb.toDecimal;
+export const toDecimal = welWeb.toDecimal;
 
 export const getTrxBalance = address => {
-  return tronWeb.trx.getBalance(address);
+  return welWeb.trx.getBalance(address);
 };
 export const formatNumber = (_num, dp = 2, rm = 1) => {
   if (_num === '--') return '--';
@@ -43,15 +43,15 @@ export const toFixedDown = (num, decimals = 4) => {
 };
 
 export const fromHex = hexString => {
-  return tronWeb.address.fromHex(hexString.replace('/^0x/', '41'));
+  return welWeb.address.fromHex(hexString.replace('/^0x/', '41'));
 };
 
 export const addressToHex = addr => {
-  return tronWeb.address.toHex(addr);
+  return welWeb.address.toHex(addr);
 };
 
 export const isAddress = address => {
-  return tronWeb.isAddress(address);
+  return welWeb.isAddress(address);
 };
 
 export const tronscanAddress = (text, address) => {
@@ -91,7 +91,7 @@ export const copyToClipboard = (e, disBottom = '5px', p = false) => {
 
   var aux = document.createElement('input');
 
-  if (tronWeb.BigNumber.isBigNumber(value)) {
+  if (welWeb.BigNumber.isBigNumber(value)) {
     aux.setAttribute('value', toBigNumber(value).valueOf());
   } else {
     aux.setAttribute('value', value.valueOf());

@@ -1,14 +1,14 @@
-import TronWeb from 'index';
+import WelWeb from 'index';
 import utils from 'utils';
 import Method from './method';
 import injectpromise from 'injectpromise';
 
 export default class Contract {
-    constructor(tronWeb = false, abi = [], address = false) {
-        if (!tronWeb || !tronWeb instanceof TronWeb)
-            throw new Error('Expected instance of TronWeb');
+    constructor(welWeb = false, abi = [], address = false) {
+        if (!welWeb || !welWeb instanceof WelWeb)
+            throw new Error('Expected instance of WelWeb');
 
-        this.tronWeb = tronWeb;
+        this.welWeb = welWeb;
         this.injectPromise = injectpromise(this);
 
         this.address = address;
@@ -23,7 +23,7 @@ export default class Contract {
         this.methodInstances = {};
         this.props = [];
 
-        if (this.tronWeb.isAddress(address))
+        if (this.welWeb.isAddress(address))
             this.deployed = true;
         else this.address = false;
 
@@ -31,7 +31,7 @@ export default class Contract {
     }
 
     async _getEvents(options = {}) {
-        const events = await this.tronWeb.event.getEventsByContractAddress(this.address, options);
+        const events = await this.welWeb.event.getEventsByContractAddress(this.address, options);
         const [latestEvent] = events.sort((a, b) => b.block - a.block);
         const newEvents = events.filter((event, index) => {
 
@@ -68,7 +68,7 @@ export default class Contract {
         if (this.eventListener)
             clearInterval(this.eventListener);
 
-        if (!this.tronWeb.eventServer)
+        if (!this.welWeb.eventServer)
             throw new Error('Event server is not configured');
 
         if (!this.address)
@@ -160,25 +160,25 @@ export default class Contract {
         }
     }
 
-    async new(options, privateKey = this.tronWeb.defaultPrivateKey, callback = false) {
+    async new(options, privateKey = this.welWeb.defaultPrivateKey, callback = false) {
         if (utils.isFunction(privateKey)) {
             callback = privateKey;
-            privateKey = this.tronWeb.defaultPrivateKey;
+            privateKey = this.welWeb.defaultPrivateKey;
         }
 
         if (!callback)
             return this.injectPromise(this.new, options, privateKey);
 
         try {
-            const address = this.tronWeb.address.fromPrivateKey(privateKey);
-            const transaction = await this.tronWeb.transactionBuilder.createSmartContract(options, address);
-            const signedTransaction = await this.tronWeb.trx.sign(transaction, privateKey);
-            const contract = await this.tronWeb.trx.sendRawTransaction(signedTransaction);
+            const address = this.welWeb.address.fromPrivateKey(privateKey);
+            const transaction = await this.welWeb.transactionBuilder.createSmartContract(options, address);
+            const signedTransaction = await this.welWeb.trx.sign(transaction, privateKey);
+            const contract = await this.welWeb.trx.sendRawTransaction(signedTransaction);
 
             if (contract.code)
                 return callback({
                     error: contract.code,
-                    message: this.tronWeb.toUtf8(contract.message)
+                    message: this.welWeb.toUtf8(contract.message)
                 })
 
             await utils.sleep(3000);
@@ -193,7 +193,7 @@ export default class Contract {
             return this.injectPromise(this.at, contractAddress);
 
         try {
-            const contract = await this.tronWeb.trx.getContract(contractAddress);
+            const contract = await this.welWeb.trx.getContract(contractAddress);
 
             if (!contract.contract_address)
                 return callback('Unknown error: ' + JSON.stringify(contract, null, 2));

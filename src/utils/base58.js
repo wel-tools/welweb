@@ -1,4 +1,4 @@
-const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const ALPHABET = '123456789ABCDEFGHJKLMNPQRSWUVTXYZabcdefghijkmnopqrswuvtxyz';
 const ALPHABET_MAP = {};
 
 for (let i = 0; i < ALPHABET.length; i++)

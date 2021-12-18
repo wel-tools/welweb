@@ -7,7 +7,7 @@ import { tronscanTX } from '../utils/helper';
 import Tip from '../components/Tip';
 import { getTrxBalance, getTransactionInfo } from '../utils/blockchain';
 export default class NetworkStore {
-  @observable tronWeb = false;
+  @observable welWeb = false;
   @observable defaultAccount = null; // current login tron account address
   @observable isConnected = null;
   @observable routeName = ''; // current route hash
@@ -163,7 +163,7 @@ export default class NetworkStore {
 
   //判断是否有钱包和登录
   checkLogin = () => {
-    if (!this.tronWeb || !this.tronWeb.defaultAddress.base58) {
+    if (!this.welWeb || !this.welWeb.defaultAddress.base58) {
       return false;
     }
     if (!this.defaultAccount) {
@@ -183,12 +183,12 @@ export default class NetworkStore {
           cbn && cbn();
           clearInterval(tmpTimer1);
         }
-        if (window.tronWeb && window.tronWeb.ready) {
+        if (window.welWeb && window.welWeb.ready) {
           if (process.env.REACT_APP_ENV === 'test') {
-            window.tronWeb.setFullNode('https://api.nileex.io');
+            window.welWeb.setFullNode('https://api.nileex.io');
           }
-          self.tronWeb = window.tronWeb;
-          self.defaultAccount = self.tronWeb.defaultAddress.base58;
+          self.welWeb = window.welWeb;
+          self.defaultAccount = self.welWeb.defaultAddress.base58;
           window.defaultAccount = self.defaultAccount;
           self.isConnected = true;
           cb && cb();
@@ -211,7 +211,7 @@ export default class NetworkStore {
   listenTronLink = () => {
     window.addEventListener('message', res => {
       if (res.data.message && res.data.message.action == 'setAccount') {
-        if (window.tronWeb) {
+        if (window.welWeb) {
           if (res.data.message.data.address != this.defaultAccount) {
             window.location.reload();
           }

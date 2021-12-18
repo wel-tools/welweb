@@ -10,7 +10,7 @@ module.exports = {
     EVENT_API: fullHost,
     NETWORK_ID: "*",
     ADDRESS_HEX: '41928c9af0651632157ef27a2cf17ca72c575a4d21',
-    ADDRESS_BASE58: 'TPL66VK2gCXNCD7EJg9pgJRfqcRazjhUZY',
+    ADDRESS_BASE58: 'WPL66VK2gCXNCD7EJg9pgJRfqcRazjhUZY',
     UPDATED_TEST_TOKEN_OPTIONS: {
         description: 'Very useless utility token',
         url: 'https://none.example.com',
@@ -18,11 +18,11 @@ module.exports = {
         freeBandwidthLimit: 100
     },
     SIGNED_HEX_TRANSACTION: '0a85010a02380a220830202d4c1473d46640d8edabfea72f5a67080112630a2d747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e5472616e73666572436f6e747261637412320a1541fbbb1a37f9fbc18a3e2b8fd8c0823251cd3b8ee8121541af4852489314e72ffae825238c52d0e1ffff1ead18c0843d70f182cffca72f1241fa301a789dc51714be33b0f298e3f990650bec285ab628ab8ea5f18aeb3466643ca89b604d9df74fa19a11235e0d7ab974322f0097eefe0b7efb38ea9ce4cf6601',
-    TEST_TRON_GRID_API: 'http://47.252.84.138:29086',
-    TEST_TRON_HEADER_API_KEY: 'be815f09-e30f-4b98-b84d-0bb41f0708fd',
-    TEST_TRON_HEADER_API_JWT_KEY: '95057b57-a2bd-4bd5-9337-5b52cb2b3bc2',
-    TEST_TRON_HEADER_JWT_ID: '2b3b8c99254f48ef90be2dee387fe7b6',
-    TEST_TRON_HEADER_JWT_PRIVATE_KEY: `-----BEGIN RSA PRIVATE KEY-----
+    TEST_WELUPS_GRID_API: 'http://47.252.84.138:29086',
+    TEST_WELUPS_HEADER_API_KEY: 'be815f09-e30f-4b98-b84d-0bb41f0708fd',
+    TEST_WELUPS_HEADER_API_JWT_KEY: '95057b57-a2bd-4bd5-9337-5b52cb2b3bc2',
+    TEST_WELUPS_HEADER_JWT_ID: '2b3b8c99254f48ef90be2dee387fe7b6',
+    TEST_WELUPS_HEADER_JWT_PRIVATE_KEY: `-----BEGIN RSA PRIVATE KEY-----
 MIIEpQIBAAKCAQEAuU+RD27l1tYdSnjiySnqUjTkuHguJq21+nS+oYIqiwHXLQot
 AC9vriP5sOXJ9w1SmWvj5JOmO2qYFxyO+zluW2vfPphXB2jPD0Fv2Cl/Cdef/SCg
 UR+KtGjMDudR/xgJcm9nZQ7pXcSi5rBXxQ9oIcLDxyU2wwXkGR9hJyIwqLkaP7nK
@@ -68,8 +68,8 @@ Djyb5403LJztsxdExbyQkm++Gg631CZus4xA77wMafGw37IhCE6sTBo=
             freeBandwidthLimit: 1000
         }
     },
-    isProposalApproved: async (tronWeb, proposal) => {
-        let chainParameters = await tronWeb.trx.getChainParameters()
+    isProposalApproved: async (welWeb, proposal) => {
+        let chainParameters = await welWeb.trx.getChainParameters()
         for(let param of chainParameters) {
             if(param.key === proposal) {
                 return param.value

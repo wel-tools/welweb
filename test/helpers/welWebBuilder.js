@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const TronWeb = require('../setup/TronWeb');
+const WelWeb = require('../setup/WelWeb');
 const jlog = require('./jlog')
 
 const {FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API, PRIVATE_KEY, SUN_NETWORK, SIDE_CHAIN} = require('./config')
@@ -16,7 +16,7 @@ const createInstanceSide = (extraOptions = {}, sideExtraOptions = {}) => {
         sideGatewayAddress: SIDE_CHAIN.sideOptions.sideGatewayAddress,
         sideChainId: SIDE_CHAIN.sideOptions.sideChainId
     }, sideExtraOptions);
-    return new TronWeb(options, sideOptions);
+    return new WelWeb(options, sideOptions);
 }
 
 const createInstance = (extraOptions = {}, sideExtraOptions = {}) => {
@@ -24,7 +24,7 @@ const createInstance = (extraOptions = {}, sideExtraOptions = {}) => {
         fullHost: FULL_NODE_API,
         privateKey: PRIVATE_KEY,
     }, extraOptions)
-    return new TronWeb(options);
+    return new WelWeb(options);
 }
 
 let instance
@@ -37,10 +37,10 @@ const getInstance = () => {
 }
 
 const newTestAccounts = async (amount) => {
-    const tronWeb = createInstance();
+    const welWeb = createInstance();
 
     console.log(chalk.blue(`Generating ${amount} new accounts...`))
-    await tronWeb.fullNode.request('/admin/temporary-accounts-generation?accounts=' + amount);
+    await welWeb.fullNode.request('/admin/temporary-accounts-generation?accounts=' + amount);
     const lastCreated = await getTestAccounts(-1)
     jlog(lastCreated.b58)
 }
@@ -51,8 +51,8 @@ const getTestAccounts = async (block) => {
         hex: [],
         pks: []
     }
-    const tronWeb = createInstance();
-    const accountsJson = await tronWeb.fullNode.request('/admin/accounts-json');
+    const welWeb = createInstance();
+    const accountsJson = await welWeb.fullNode.request('/admin/accounts-json');
     const index = typeof block === 'number'
         ? (block > -1 && block < accountsJson.more.length ? block : accountsJson.more.length - 1)
         : undefined
@@ -60,9 +60,9 @@ const getTestAccounts = async (block) => {
         ? accountsJson.more[index].privateKeys
         : accountsJson.privateKeys;
     for (let i = 0; i < accounts.pks.length; i++) {
-        let addr = tronWeb.address.fromPrivateKey(accounts.pks[i]);
+        let addr = welWeb.address.fromPrivateKey(accounts.pks[i]);
         accounts.b58.push(addr);
-        accounts.hex.push(tronWeb.address.toHex(addr));
+        accounts.hex.push(welWeb.address.toHex(addr));
     }
     return Promise.resolve(accounts);
 }
@@ -73,6 +73,6 @@ module.exports = {
     createInstanceSide,
     newTestAccounts,
     getTestAccounts,
-    TronWeb
+    WelWeb
 }
 
