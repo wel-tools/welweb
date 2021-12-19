@@ -18,9 +18,20 @@
         <div id="app"></div>
         <script>
             window.$docsify = {
+                name: 'Wel Web',
+
+                search: 'auto',
+                paths: [], // or 'auto'
+                placeholder: 'Type to search',
+
                 loadSidebar: true,
-                name: "",
-                repo: "",
+                autoHeader: true,
+
+                loadNavbar: true,
+                loadNavbar: '_nav.md',
+
+                auto2top: true,
+
                 copyCode: {
                     buttonText: "Copy to clipboard",
                     errorText: "Error",
@@ -31,5 +42,10 @@
         <!-- Docsify v4 -->
         <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
         <script src="https://unpkg.com/docsify-copy-code"></script>
+        <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+        <script src="//polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
+        <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+
     </body>
 </html>

@@ -3,11 +3,11 @@
 </h1>
 
 <p align="center">
-  <a href="https://github.com/tron-us/welweb/issues">
-    <img src="https://img.shields.io/github/issues/tron-us/welweb.svg">
+  <a href="https://github.com/wel-tools/welweb/issues">
+    <img src="https://img.shields.io/github/issues/wel-tools/welweb.svg">
   </a>
-  <a href="https://github.com/tron-us/welweb/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/tron-us/welweb.svg">
+  <a href="https://github.com/wel-tools/welweb/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/wel-tools/welweb.svg">
   </a>
 </p>
 

@@ -1,6 +1,6 @@
 {
     "name": "welweb",
-    "version": "0.0.2",
+    "version": "0.0.1",
     "description": "JavaScript SDK that encapsulates the WELUPS HTTP API",
     "main": "dist/WelWeb.node.js",
     "scripts": {

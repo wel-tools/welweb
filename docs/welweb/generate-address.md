@@ -2,7 +2,7 @@
 Generate a new privatekey + address combination
 
 ## welWeb.createAccount
-Convert Base58 format addresses to Hex
+Generate a new privatekey + address combination. This account is not activated on the network.
 
 **Usage**
 ```javascript
