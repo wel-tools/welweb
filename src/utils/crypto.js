@@ -5,6 +5,8 @@ import {encode58, decode58} from './base58';
 import {byte2hexStr, byteArray2hexStr} from './bytes';
 import {ec as EC} from 'elliptic';
 import {keccak256, sha256} from './ethersUtils';
+import {encryptKeystore, decryptKeystore} from "@ethersproject/json-wallets";
+import { computeAddress as etherComputeAddress } from "@ethersproject/transactions";
 
 export function getBase58CheckAddress(addressBytes) {
     const hash0 = SHA256(addressBytes);
@@ -259,4 +261,17 @@ export function pkToAddress(privateKey, strict = false) {
     const com_addressBytes = getAddressFromPriKey(com_priKeyBytes);
 
     return getBase58CheckAddress(com_addressBytes);
+}
+
+export function privateKeyToKeystore(privateKey, password) {
+    const _privateKey = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
+    return encryptKeystore({
+        address: etherComputeAddress(_privateKey),
+        privateKey: _privateKey
+    }, password);
+}
+
+export async function keystoreToPrivateKey(keystore, password) {
+    const keystoreAccount = await decryptKeystore(keystore, password);
+    return keystoreAccount.privateKey.replace('0x', '');
 }

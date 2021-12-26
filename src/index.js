@@ -296,6 +296,20 @@ export default class WelWeb extends EventEmitter {
                 } catch {
                     return false;
                 }
+            },
+            toKeystore(privateKey, password) {
+                try {
+                    return utils.crypto.privateKeyToKeystore(privateKey, password);
+                } catch {
+                    return false;
+                }
+            },
+            fromKeystore(keystore, password) {
+                try {
+                    return utils.crypto.keystoreToPrivateKey(keystore, password);
+                } catch {
+                    return false;
+                }
             }
         }
     }
