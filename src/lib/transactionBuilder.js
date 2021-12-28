@@ -41,7 +41,7 @@ export default class TransactionBuilder {
         this.validator = new Validator(welWeb);
     }
 
-    sendTrx(to = false, amount = 0, from = this.welWeb.defaultAddress.hex, options, callback = false) {
+    sendWel(to = false, amount = 0, from = this.welWeb.defaultAddress.hex, options, callback = false) {
         if (utils.isFunction(options)) {
             callback = options;
             options = {};
@@ -56,7 +56,7 @@ export default class TransactionBuilder {
         }
 
         if (!callback)
-            return this.injectPromise(this.sendTrx, to, amount, from, options);
+            return this.injectPromise(this.sendWel, to, amount, from, options);
 
         // accept amounts passed as strings
         amount = parseInt(amount)
