@@ -172,8 +172,8 @@ export default class Contract {
         try {
             const address = this.welWeb.address.fromPrivateKey(privateKey);
             const transaction = await this.welWeb.transactionBuilder.createSmartContract(options, address);
-            const signedTransaction = await this.welWeb.trx.sign(transaction, privateKey);
-            const contract = await this.welWeb.trx.sendRawTransaction(signedTransaction);
+            const signedTransaction = await this.welWeb.wel.sign(transaction, privateKey);
+            const contract = await this.welWeb.wel.sendRawTransaction(signedTransaction);
 
             if (contract.code)
                 return callback({
@@ -193,7 +193,7 @@ export default class Contract {
             return this.injectPromise(this.at, contractAddress);
 
         try {
-            const contract = await this.welWeb.trx.getContract(contractAddress);
+            const contract = await this.welWeb.wel.getContract(contractAddress);
 
             if (!contract.contract_address)
                 return callback('Unknown error: ' + JSON.stringify(contract, null, 2));

@@ -620,7 +620,7 @@ export default class Wel {
         if (!utils.isHex(message))
             return callback('Expected hex message input');
 
-        if (Trx.verifySignature(message, address, signature, useWelHeader))
+        if (Wel.verifySignature(message, address, signature, useWelHeader))
             return callback(null, true);
 
         callback('Signature does not match');
@@ -678,7 +678,7 @@ export default class Wel {
                 return callback('Expected hex message input');
 
             try {
-                const signatureHex = Trx.signString(transaction, privateKey, useWelHeader)
+                const signatureHex = Wel.signString(transaction, privateKey, useWelHeader)
                 return callback(null, signatureHex);
             } catch (ex) {
                 callback(ex);
@@ -935,7 +935,7 @@ export default class Wel {
 
         try {
             const address = options.privateKey ? this.welWeb.address.fromPrivateKey(options.privateKey) : options.address;
-            const transaction = await this.welWeb.transactionBuilder.sendTrx(to, amount, address);
+            const transaction = await this.welWeb.transactionBuilder.sendWel(to, amount, address);
             const signedTransaction = await this.sign(transaction, options.privateKey || undefined);
             const result = await this.sendRawTransaction(signedTransaction);
 

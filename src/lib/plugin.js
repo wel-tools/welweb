@@ -32,7 +32,7 @@ export default class Plugin {
         }
         if (semver.satisfies(WelWeb.version, pluginInterface.requires)) {
             if (pluginInterface.fullClass) {
-                // plug the entire class at the same level of welWeb.trx
+                // plug the entire class at the same level of welWeb.wel
                 let className = plugin.constructor.name
                 let classInstanceName = className.substring(0, 1).toLowerCase() + className.substring(1)
                 if (className !== classInstanceName) {
@@ -41,7 +41,7 @@ export default class Plugin {
                     result.libs.push(className)
                 }
             } else {
-                // plug methods into a class, like trx
+                // plug methods into a class, like wel
                 for (let component in pluginInterface.components) {
                     if (!this.welWeb.hasOwnProperty(component)) {
                         continue

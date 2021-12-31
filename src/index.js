@@ -111,7 +111,7 @@ export default class WelWeb extends EventEmitter {
 
     async getFullnodeVersion() {
         try {
-            const nodeInfo = await this.trx.getNodeInfo()
+            const nodeInfo = await this.wel.getNodeInfo()
             this.fullnodeVersion = nodeInfo.configNodeInfo.codeVersion
             if (this.fullnodeVersion.split('.').length === 2) {
                 this.fullnodeVersion += '.0';
@@ -397,13 +397,13 @@ export default class WelWeb extends EventEmitter {
     }
 
     static fromSun(sun) {
-        const trx = WelWeb.toBigNumber(sun).div(1_000_000);
-        return utils.isBigNumber(sun) ? trx : trx.toString(10);
+        const wel = WelWeb.toBigNumber(sun).div(1_000_000);
+        return utils.isBigNumber(sun) ? wel : wel.toString(10);
     }
 
-    static toSun(trx) {
-        const sun = WelWeb.toBigNumber(trx).times(1_000_000);
-        return utils.isBigNumber(trx) ? sun : sun.toString(10);
+    static toSun(wel) {
+        const sun = WelWeb.toBigNumber(wel).times(1_000_000);
+        return utils.isBigNumber(wel) ? sun : sun.toString(10);
     }
 
     static toBigNumber(amount = 0) {

@@ -906,8 +906,8 @@ export default class TransactionBuilder {
             owner_address: toHex(ownerAddress)
         };
 
-        if (this.welWeb.trx.cache.contracts[contractAddress]) {
-            delete this.welWeb.trx.cache.contracts[contractAddress]
+        if (this.welWeb.wel.cache.contracts[contractAddress]) {
+            delete this.welWeb.wel.cache.contracts[contractAddress]
         }
         this.welWeb.fullNode.request('wallet/clearabi', data, 'post').then(transaction => resultManager(transaction, callback)).catch(err => callback(err));
 
