@@ -301,14 +301,14 @@ export default class Wel {
         }).catch(err => callback(err));
     }
 
-    getAccount(address = this.welWeb.defaultAddress.hex, callback = false, solidity = true) {
+    getAccount(address = this.welWeb.defaultAddress.hex, solidity = true, callback = false) {
         if (utils.isFunction(address)) {
             callback = address;
             address = this.welWeb.defaultAddress.hex;
         }
 
         if (!callback)
-            return this.injectPromise(this.getAccount, address);
+            return this.injectPromise(this.getAccount, address, solidity);
 
         if (!this.welWeb.isAddress(address))
             return callback('Invalid address provided');
@@ -359,16 +359,16 @@ export default class Wel {
         }).catch(err => callback(err));
     }
 
-    getBalance(address = this.welWeb.defaultAddress.hex, callback = false) {
+    getBalance(address = this.welWeb.defaultAddress.hex, solidity = true, callback = false) {
         if (utils.isFunction(address)) {
             callback = address;
             address = this.welWeb.defaultAddress.hex;
         }
 
         if (!callback)
-            return this.injectPromise(this.getBalance, address);
+            return this.injectPromise(this.getBalance, address, solidity);
 
-        this.getAccount(address).then(({balance = 0}) => {
+        this.getAccount(address, solidity, false).then(({balance = 0}) => {
             callback(null, balance);
         }).catch(err => callback(err));
     }
