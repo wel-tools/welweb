@@ -301,7 +301,7 @@ export default class Wel {
         }).catch(err => callback(err));
     }
 
-    getAccount(address = this.welWeb.defaultAddress.hex, callback = false) {
+    getAccount(address = this.welWeb.defaultAddress.hex, callback = false, solidity = true) {
         if (utils.isFunction(address)) {
             callback = address;
             address = this.welWeb.defaultAddress.hex;
@@ -315,7 +315,9 @@ export default class Wel {
 
         address = this.welWeb.address.toHex(address);
 
-        this.welWeb.solidityNode.request('walletsolidity/getaccount', {
+        const requestUrl = solidity ? 'walletsolidity/getaccount' : 'wallet/getaccount'
+
+        this.welWeb.solidityNode.request(requestUrl, {
             address
         }, 'post').then(account => {
             callback(null, account);
