@@ -62,6 +62,7 @@ export default class WelWeb extends EventEmitter {
         this.event = new Event(this);
         this.transactionBuilder = new TransactionBuilder(this);
         this.wel = new Wel(this);
+        this.trx = new Wel(this);
         this.plugin = new Plugin(this, options);
         this.utils = utils;
 

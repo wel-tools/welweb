@@ -317,7 +317,9 @@ export default class Wel {
 
         const requestUrl = solidity ? 'walletsolidity/getaccount' : 'wallet/getaccount'
 
-        this.welWeb.solidityNode.request(requestUrl, {
+        const node = solidity ? this.welWeb.solidityNode : this.welWeb.fullNode;
+
+        node.request(requestUrl, {
             address
         }, 'post').then(account => {
             callback(null, account);
