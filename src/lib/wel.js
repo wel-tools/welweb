@@ -1175,6 +1175,10 @@ export default class Wel {
         return this.sendTransaction(...args);
     }
 
+    sendTrx(...args) {
+        return this.sendTransaction(...args);
+    }
+
     broadcast(...args) {
         return this.sendRawTransaction(...args);
     }
