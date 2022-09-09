@@ -1159,6 +1159,45 @@ export default class Wel {
         }
     }
 
+    async createAccount(newAccountAddress, options = {}, callback = false) {
+        if (utils.isFunction(options)) {
+            callback = options;
+            options = {};
+        }
+
+        if (typeof options === 'string')
+            options = {privateKey: options};
+
+        if (!callback) {
+            return this.injectPromise(this.updateAccount, newAccountAddress, options);
+        }
+
+
+        if (!this.welWeb.isAddress(newAccountAddress)) {
+            return callback('Invalid new account address provided');
+        }
+
+        options = {
+            privateKey: this.welWeb.defaultPrivateKey,
+            address: this.welWeb.defaultAddress.hex,
+            ...options
+        };
+
+        if (!options.privateKey && !options.address)
+            return callback('Function requires either a private key or address to be set');
+
+        try {
+            const address = options.privateKey ? this.welWeb.address.fromPrivateKey(options.privateKey) : options.address;
+            const createdAccount = await this.welWeb.transactionBuilder.createAccount(newAccountAddress, address);
+            const signedTransaction = await this.sign(createdAccount, options.privateKey || undefined);
+            const result = await this.sendRawTransaction(signedTransaction);
+
+            return callback(null, result);
+        } catch (ex) {
+            return callback(ex);
+        }
+    }
+
     signMessage(...args) {
         return this.sign(...args);
     }

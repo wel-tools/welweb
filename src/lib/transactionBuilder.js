@@ -1127,6 +1127,36 @@ export default class TransactionBuilder {
         this.welWeb.fullNode.request('wallet/updateaccount', data, 'post').then(transaction => resultManager(transaction, callback)).catch(err => callback(err));
     }
 
+    createAccount(newAccountAddress, address = this.welWeb.defaultAddress.hex, options, callback = false) {
+        if (utils.isFunction(options)) {
+            callback = options;
+            options = {};
+        }
+
+        if (utils.isFunction(address)) {
+            callback = address;
+            address = this.welWeb.defaultAddress.hex;
+        } else if (utils.isObject(address)) {
+            options = address;
+            address = this.welWeb.defaultAddress.hex;
+        }
+
+        if (!callback) {
+            return this.injectPromise(this.createAccount, newAccountAddress, address, options);
+        }
+
+        const data = {
+            account_address: toHex(newAccountAddress),
+            owner_address: toHex(address),
+        };
+
+        if (options && options.permissionId) {
+            data.Permission_id = options.permissionId;
+        }
+
+        this.welWeb.fullNode.request('wallet/createaccount', data, 'post').then(transaction => resultManager(transaction, callback)).catch(err => callback(err));
+    }
+
     setAccountId(accountId, address = this.welWeb.defaultAddress.hex, callback = false) {
         if (utils.isFunction(address)) {
             callback = address;
